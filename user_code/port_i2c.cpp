@@ -16,7 +16,7 @@
 
 port_i2c_t* port_i2c_init(port_i2c_initCfg_t *cfg){
 	configASSERT(cfg);
-    port_i2c_t *i2c = (port_i2c_t *)pvPortMalloc(sizeof(*i2c));
+    port_i2c_t *i2c = (port_i2c_t *) pvPortMalloc(sizeof(*i2c));
 	configASSERT(i2c);
 	memset(i2c, 0, sizeof(*i2c));
 	i2c->handle.Instance = cfg->i2c_inst;
@@ -24,15 +24,15 @@ port_i2c_t* port_i2c_init(port_i2c_initCfg_t *cfg){
 	i2c->handle.Init.DutyCycle = I2C_DUTYCYCLE_2;
 	i2c->handle.Init.OwnAddress1 = 0x18; //адрес нашего контроллера, взят из головы
 	i2c->handle.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-	i2c->handle.Init.GeneralCallMode = I2C_GENERALCALL_ENABLE;
+	i2c->handle.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
 	i2c->handle.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-    HAL_StatusTypeDef staus = HAL_ERROR;
+	HAL_StatusTypeDef staus;
     (void)staus;
 	staus = HAL_I2C_Init(&i2c->handle);
 	i2c->semaphore = xSemaphoreCreateBinary();
 	DMA_HandleTypeDef *dma;
 	if ( cfg->dmaTx != NULL ) {
-        i2c->handle.hdmatx =(DMA_HandleTypeDef*) pvPortMalloc (sizeof (*dma));
+        i2c->handle.hdmatx = (DMA_HandleTypeDef *)pvPortMalloc (sizeof (*dma));
 		configASSERT ( i2c->handle.hdmatx );
 		dma = i2c->handle.hdmatx;
 		dma->Instance = cfg->dmaTx;
@@ -53,7 +53,7 @@ port_i2c_t* port_i2c_init(port_i2c_initCfg_t *cfg){
 		dma->Parent = &i2c->handle;
 	}
 	if ( cfg->dmaRx != NULL ) {
-        i2c->handle.hdmarx = (DMA_HandleTypeDef*)pvPortMalloc (sizeof (*dma));
+        i2c->handle.hdmarx = (DMA_HandleTypeDef *)pvPortMalloc (sizeof (*dma));
 		configASSERT ( i2c->handle.hdmarx );
 		dma = i2c->handle.hdmarx;
 		dma->Instance = cfg->dmaRx;

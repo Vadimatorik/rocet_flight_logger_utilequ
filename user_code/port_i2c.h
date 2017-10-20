@@ -7,10 +7,11 @@
 
 #ifndef PORT_I2C_H_
 #define PORT_I2C_H_
+
+#include "stdint.h"
 #include "stm32f1xx_hal_conf.h"
 #include "user_os.h"
 
-#include "stdint.h"
 typedef struct{
 	I2C_HandleTypeDef handle;
 	xSemaphoreHandle semaphore; // семафор по завершению приёма или отправки

@@ -8,6 +8,6 @@
 #ifndef BALANCE_MOTIONSENSOR_H_
 #define BALANCE_MOTIONSENSOR_H_
 
-
 void balance_motionsensor_init(void);
+
 #endif /* BALANCE_MOTIONSENSOR_H_ */
