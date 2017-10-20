@@ -7,3 +7,6 @@
 [submodule "mk_hardware_interfaces"]
 	path = mk_hardware_interfaces
 	url = git@github.com:Vadimatorik/mk_hardware_interfaces.git
+[submodule "FreeRTOS_for_stm32f1"]
+	path = FreeRTOS_for_stm32f1
+	url = git@github.com:Vadimatorik/FreeRTOS_for_stm32f1.git
