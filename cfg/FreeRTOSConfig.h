@@ -7,11 +7,11 @@ extern "C" {
 #define configUSE_PREEMPTION            1
 #define configUSE_IDLE_HOOK             0                                      // Во время бездействия функция пользователя не вызывается.
 #define configUSE_TICK_HOOK             0                                      // После каждого системного тика функция пользователя не вызывается.
-#define configCPU_CLOCK_HZ              ( ( unsigned long ) 72000000 )
+#define configCPU_CLOCK_HZ              ( ( unsigned long ) 8000000 )
 #define configTICK_RATE_HZ              ( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES            ( 5 )
 #define configMINIMAL_STACK_SIZE        ( ( unsigned short ) 300 )
-#define configTOTAL_HEAP_SIZE           ( ( size_t ) ( 1 * 1024 ) )
+#define configTOTAL_HEAP_SIZE           ( ( size_t ) ( 10 * 1024 ) )
 #define configMAX_TASK_NAME_LEN         ( 10 )
 #define configUSE_16_BIT_TICKS          0
 #define configIDLE_SHOULD_YIELD         1
@@ -63,10 +63,9 @@ extern void vPortSVCHandler( void ) __attribute__ (( naked ));
 /*
  * FreeRTOS забирает себе эти 2 handler-а.
  */
-#define vPortSVCHandler         SVC_Handler
-#define xPortPendSVHandler      PendSV_Handler
-#define xPortSysTickHandler     SysTick_Handler
-
+#define vPortSVCHandler SVC_Handler
+#define xPortPendSVHandler PendSV_Handler
+#define xPortSysTickHandler SysTick_Handler
 #ifdef __cplusplus
 }
 #endif
