@@ -13,3 +13,6 @@
 [submodule "stm32f1_low_driver"]
 	path = stm32f1_low_driver
 	url = git@github.com:Vadimatorik/stm32f1_low_driver.git
+[submodule "module_system_dummy"]
+	path = module_system_dummy
+	url = git@github.com:Vadimatorik/module_system_dummy.git
