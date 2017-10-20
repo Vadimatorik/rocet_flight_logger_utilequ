@@ -1,0 +1,6 @@
+[submodule "micro_sd_driver_by_vadimatorik"]
+	path = micro_sd_driver_by_vadimatorik
+	url = git@github.com:Vadimatorik/micro_sd_driver_by_vadimatorik.git
+[submodule "module_fat_fs_by_chan"]
+	path = module_fat_fs_by_chan
+	url = git@github.com:Vadimatorik/module_fat_fs_by_chan.git
