@@ -33,3 +33,9 @@
 
 .~lock.makefile#
 build/
+
+*.config
+*.creator
+*.files
+*.includes
+*.creator.user
