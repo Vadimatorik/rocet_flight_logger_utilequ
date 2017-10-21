@@ -16,3 +16,6 @@
 [submodule "module_system_dummy"]
 	path = module_system_dummy
 	url = git@github.com:Vadimatorik/module_system_dummy.git
+[submodule "module_sensor"]
+	path = module_sensor
+	url = git@github.com:Vadimatorik/module_sensor.git
