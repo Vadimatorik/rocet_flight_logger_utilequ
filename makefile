@@ -44,7 +44,7 @@ LDFLAGS			+= -ffunction-sections -fdata-sections
 LDFLAGS			+= -Wl,--gc-sections 
 
 # Формируем map файл.
-LDFLAGS			+= -Wl,-Map="build/$(PROJECT_NAME).map"
+#LDFLAGS			+= -Wl,-Map="build/$(PROJECT_NAME).map"
 
 #**********************************************************************
 # Параметры toolchain-а.
@@ -189,8 +189,13 @@ build/obj/stm32f1_low_driver/%.o:	stm32f1_low_driver/%.c
 build/obj/stm32f1_low_driver/%.o:	stm32f1_low_driver/%.s
 	@echo [AS] $<
 	@mkdir -p $(dir $@)
-	@$(AS) $(C_FLAGS) $(STM32F1_LOW_DRIVER_PATH) $(DEFINE_PROJ) $(USER_CFG_PATH) $(STM32F1_LOW_DRIVER_OPTIMIZATION) -c $< -o $@
+	@$(AS) $(STM32F1_LOW_DRIVER_PATH) $(DEFINE_PROJ) $(USER_CFG_PATH) $(STM32F1_LOW_DRIVER_OPTIMIZATION) -c $< -o $@
 
+build/obj/stm32f1_low_driver/%.o:	stm32f1_low_driver/%.cpp
+	@echo [CPP] $<
+	@mkdir -p $(dir $@)
+	@$(CPP) $(CPP_FLAGS) $(STM32F1_LOW_DRIVER_PATH) $(PROJECT_PATH) $(DEFINE_PROJ) $(USER_CFG_PATH) $(STM32F1_LOW_DRIVER_OPTIMIZATION) -c $< -o $@
+	
 #**********************************************************************
 # Системные заглушки.
 #**********************************************************************
