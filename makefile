@@ -9,6 +9,7 @@ MICRO_SD_DRIVER_OPTIMIZATION		:= -g3 -O0
 FAT_FS_OPTIMIZATION					:= -g3 -O0
 STM32F1_LOW_DRIVER_OPTIMIZATION		:= -g3 -O0
 MODULE_SYSTEM_DUMMY_OPTIMIZATION	:= -g3 -O0
+MODULE_SENSOR_OPTIMIZATION			:= -g3 -O0
 
 DEFINE_PROJ := -DSTM32F103xB
 
@@ -160,9 +161,26 @@ PROJECT_OBJ_FILE			+= $(MICRO_SD_DRIVER_OBJ_FILE)
 build/obj/micro_sd_driver_by_vadimatorik/%.o:	micro_sd_driver_by_vadimatorik/%.cpp
 	@echo [CPP] $<
 	@mkdir -p $(dir $@)
-	@$(CPP) $(CPP_FLAGS) $(MK_INTER_PATH) $(MICRO_SD_DRIVER_PATH) $(USER_CFG_PATH) $(STM32_F2_API_PATH) $(FREE_RTOS_PATH)  $(MICRO_SD_DRIVER_OPTIMIZATION) -c $< -o $@
+	@$(CPP) $(CPP_FLAGS) $(MK_INTER_PATH) $(MICRO_SD_DRIVER_PATH) $(USER_CFG_PATH) $(FREE_RTOS_PATH)  $(MICRO_SD_DRIVER_OPTIMIZATION) -c $< -o $@
 	
+#**********************************************************************
+# Драйвер SD карты (micro_sd_driver_by_vadimatorik).
+#**********************************************************************
+MODULE_SENSOR_H_FILE		:= $(shell find module_sensor/ -maxdepth 3 -type f -name "*.h" )
+MODULE_SENSOR_CPP_FILE		:= $(shell find module_sensor/ -maxdepth 3 -type f -name "*.cpp" )
+MODULE_SENSOR_DIR			:= $(shell find module_sensor/ -maxdepth 3 -type d -name "*" )
+MODULE_SENSOR_PATH			:= $(addprefix -I, $(MODULE_SENSOR_DIR))
+MODULE_SENSOR_OBJ_FILE		:= $(addprefix build/obj/, $(MODULE_SENSOR_CPP_FILE))
+MODULE_SENSOR_OBJ_FILE		:= $(patsubst %.cpp, %.o, $(MODULE_SENSOR_OBJ_FILE))
 
+PROJECT_PATH				+= $(MODULE_SENSOR_PATH)
+PROJECT_OBJ_FILE			+= $(MODULE_SENSOR_OBJ_FILE)
+
+build/obj/module_sensor/%.o:	module_sensor/%.cpp
+	@echo [CPP] $<
+	@mkdir -p $(dir $@)
+	@$(CPP) $(CPP_FLAGS) $(MK_INTER_PATH) $(MODULE_SENSOR_PATH) $(USER_CFG_PATH) $(FREE_RTOS_PATH)  $(MODULE_SENSOR_OPTIMIZATION) -c $< -o $@
+	
 #**********************************************************************
 # Сборка драйверов от ST.
 #**********************************************************************
