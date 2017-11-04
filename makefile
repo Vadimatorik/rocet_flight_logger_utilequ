@@ -1,4 +1,6 @@
-﻿#**********************************************************************
+﻿PROJECT_NAME := RFLU
+
+#**********************************************************************
 # Параметры сборки проекта.
 #**********************************************************************
 MODULE_FREERTOS_FOR_STM32F1_OPTIMIZATION			:= -g3 -O0
@@ -6,6 +8,7 @@ MODULE_FSM_OPTIMIZATION								:= -g3 -O0
 MODULE_SENSOR_OPTIMIZATION							:= -g3 -O0
 MODULE_STM32F1_LOW_LEVEL_OPTIMIZATION				:= -g3 -O0
 MODULE_SYSTEM_DUMMY_OPTIMIZATION					:= -g3 -O0
+USER_CODE_OPTIMIZATION								:= -g3 -O0
 
 LD_FILES = -T module_stm32f1_low_level/CMSIS/device/gcc/linker/STM32F103XB_FLASH.ld
 
