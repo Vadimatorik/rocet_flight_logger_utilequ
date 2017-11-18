@@ -31,11 +31,11 @@ typedef struct _mpu6050{
 	port_i2c_t *i2c;
 	int period;
 	void (*start)(void); //для включения прерывания
-	float a_data[3]; // данные акселерометра xyz g
-	float g_data[3]; //даныне гироскопа xyz rad/sec
+    float a_data[3];
+    float g_data[3];
 	xSemaphoreHandle mutex;
-	xSemaphoreHandle syncSemaphore; //синхронизация по готовности решения(внтуренняя, по прерыванию на ножке IMU)
-	xSemaphoreHandle extSolRedy;// синхонизация внешних потоков. Выставляется при готовности решения.
+    xSemaphoreHandle syncSemaphore;
+    xSemaphoreHandle extSolRedy;
 }mpu6050_t;
 
 mpu6050_t* mpu6050_init(mpu6050_init_t* cfg);

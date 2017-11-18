@@ -97,7 +97,7 @@ int mpu6050_getData(mpu6050_t *d, float *a_data, float *g_data){
 }
 
 int mpu6050_getDataSync(mpu6050_t *d, float *a_data, float *g_data){
-	int rv = -1;
+    int rv = -1;
 	xSemaphoreTake(d->extSolRedy, portMAX_DELAY); //ждём семафор внешней синхронизации
 	if(xSemaphoreTake(d->mutex, portMAX_DELAY) == pdTRUE){
 		memcpy(a_data, d->a_data, sizeof(d->a_data));
