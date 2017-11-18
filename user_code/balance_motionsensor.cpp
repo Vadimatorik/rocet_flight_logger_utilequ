@@ -19,8 +19,6 @@ void startImu(void){
 }
 
 void i2c_pins(void){
-    __HAL_RCC_I2C1_CLK_ENABLE();
-    __HAL_RCC_DMA1_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     GPIO_InitTypeDef cfg;
     cfg.Pin = GPIO_PIN_6 | GPIO_PIN_7;
@@ -29,16 +27,6 @@ void i2c_pins(void){
     cfg.Speed = GPIO_SPEED_FREQ_HIGH;
     HAL_GPIO_Init(GPIOB, &cfg);
     int_pin();
-}
-
-int getImuDataSync(float *accArry, float *gyroArray){
-    float acc[3], gyro[3];
-    if(!mpu6050_getDataSync(imu, acc, gyro)){
-        memcpy(accArry, acc, sizeof(acc));
-        memcpy(gyroArray, gyro, sizeof(gyro));
-        return 0;
-    }
-    return 1;
 }
 
 char t_name[] = "imuThread";
@@ -61,12 +49,6 @@ void balance_motionsensor_init(void){
     i2c_pins();
 
     imu = mpu6050_init(&cfg);
-    HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 6, 0);
-    HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
-    HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 6, 0);
-    HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
-    HAL_NVIC_SetPriority(I2C1_EV_IRQn, 6, 0);
-    HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
 }
 
 //перывание по ноге  mpu6050  готовность данных
@@ -88,19 +70,4 @@ void DMA1_Channel7_IRQHandler(void){
     HAL_DMA_IRQHandler(imu->i2c->handle.hdmarx);
 }
 
-void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c){
-    (void)hi2c;
-    BaseType_t xHigherPriorityTaskWoken = 0;
-
-    xSemaphoreGiveFromISR (imu->i2c->semaphore, &xHigherPriorityTaskWoken);
-    portYIELD_FROM_ISR (xHigherPriorityTaskWoken);
-}
-
-void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c){
-     (void)hi2c;
-    BaseType_t xHigherPriorityTaskWoken = 0;
-
-    xSemaphoreGiveFromISR (imu->i2c->semaphore, &xHigherPriorityTaskWoken);
-    portYIELD_FROM_ISR (xHigherPriorityTaskWoken);
-}
 }
