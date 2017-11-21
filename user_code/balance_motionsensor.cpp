@@ -1,6 +1,6 @@
-#include "mpu6050.h"
 #include <string.h>
 
+/*
 mpu6050_t *imu = NULL;
 //MPU6050_interapt
 void int_pin(void){
@@ -71,3 +71,4 @@ void DMA1_Channel7_IRQHandler(void){
 }
 
 }
+*/
