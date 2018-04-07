@@ -1,6 +1,6 @@
 #include "rk_hardware.h"
 
-void rk_hardware_init ( void ) {
-    HAL_Init();
+void hardwareInit ( void ) {
+	__HAL_FLASH_PREFETCH_BUFFER_ENABLE();
 
 }

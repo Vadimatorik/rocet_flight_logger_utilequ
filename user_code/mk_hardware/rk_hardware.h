@@ -4,4 +4,4 @@
 
 #include "rk_pins.h"
 
-void rk_hardware_init ( void );
+void hardwareInit ( void );
