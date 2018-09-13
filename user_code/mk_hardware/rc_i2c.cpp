@@ -1,5 +1,6 @@
-#include "i2c.h"
+//#include "i2c.h"
 
+/*
 i2c_cfg i2cStructCfg = {
 	.i2c_inst			= I2C1,
 	.speed				= 100000,
@@ -8,3 +9,4 @@ i2c_cfg i2cStructCfg = {
 };
 
 i2c rkI2cObj( &i2cStructCfg );
+*/

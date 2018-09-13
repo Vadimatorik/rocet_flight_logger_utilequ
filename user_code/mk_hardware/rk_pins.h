@@ -1,6 +1,6 @@
 #pragma once
 
 #include "pin.h"
-#include "port.h"
+#include "port_global.h"
 
-extern global_port	rkGlobalPortObj;
+extern McHardwareInterfacesImplementation::PortGlobal	rkGlobalPortObj;

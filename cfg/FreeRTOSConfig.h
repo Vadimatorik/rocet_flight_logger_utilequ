@@ -4,6 +4,7 @@
 extern "C" {
 #endif
 
+#define configUSE_HEAP_SCHEME			4
 #define configUSE_PREEMPTION            1
 #define configUSE_IDLE_HOOK             0                                      // Во время бездействия функция пользователя не вызывается.
 #define configUSE_TICK_HOOK             0                                      // После каждого системного тика функция пользователя не вызывается.
@@ -22,7 +23,6 @@ extern "C" {
 #define configUSE_MALLOC_FAILED_HOOK    0                                   // В случае неудачного выделения памяти, функция пользователя не вызывается.
 #define configUSE_APPLICATION_TASK_TAG  0
 #define configUSE_COUNTING_SEMAPHORES   1
-#define configGENERATE_RUN_TIME_STATS   0
 #define configUSE_TRACE_FACILITY        1
 #define configGDB_HELPER				1
 

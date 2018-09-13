@@ -1,120 +1,100 @@
-﻿PROJECT_NAME := RFLU
+﻿PROJECT_NAME		:=	RFLU
+# MCU param.
+MK_FLAGS			:=	-mcpu=cortex-m3 
+MK_FLAGS			+=	-mthumb
+MK_FLAGS			+=	-mfloat-abi=soft
+MK_FLAGS			+=	--specs=nano.specs
+
+# Optimization.
+CODE_OPTIMIZATION	:=	-O0 -g3
+
+# C flags.
+C_FLAGS				:=	$(MK_FLAGS) 
+C_FLAGS				+=	-std=c99 
+C_FLAGS				+=	-fshort-enums								
+
+# CPP flags.
+CPP_FLAGS			:=	$(MK_FLAGS)
+CPP_FLAGS			+=	-Werror
+CPP_FLAGS			+=	-Wall
+CPP_FLAGS			+=	-Wextra
+CPP_FLAGS			+=	-std=c++14
+CPP_FLAGS			+=	-fno-exceptions
+CPP_FLAGS			+=	-fshort-enums	
+
+# Linker.
+LD_FILES			:=	-T submodule/module_stm32f1_low_level/LD/STM32F103XB_FLASH.ld
+STARTUPE_S_NAME		:=	submodule/module_stm32f1_low_level/startupe/startup_stm32f103xb.s
+
+#Linker flags.
+LDFLAGS				:=	$(MK_FLAGS) $(LD_FILES) -fno-exceptions
+LDFLAGS				+=	-Wl,--undefined=uxTopUsedPriority			
+LDFLAGS				+=	-ffunction-sections -Wl,--gc-sections
 
 #**********************************************************************
-# Параметры сборки проекта.
+# Toolchain param.
 #**********************************************************************
-MODULE_FREERTOS_FOR_STM32F1_OPTIMIZATION			:= -g3 -O0
-MODULE_FSM_OPTIMIZATION								:= -g3 -O0
-MODULE_SENSOR_OPTIMIZATION							:= -g3 -O0
-MODULE_STM32F1_LOW_LEVEL_OPTIMIZATION				:= -g3 -O0
-MODULE_SYSTEM_DUMMY_OPTIMIZATION					:= -g3 -O0
-USER_CODE_OPTIMIZATION								:= -g3 -O0
+TOOLCHAIN_PATH		=	arm-none-eabi
 
-LD_FILES = -T module_stm32f1_low_level/CMSIS/device/gcc/linker/STM32F103XB_FLASH.ld
-
-MK_FLAGS									:= -mcpu=cortex-m3 -mthumb -mfloat-abi=soft 
-
-C_FLAGS										:= $(MK_FLAGS) 
-# Все предупреждения == ошибки.
-#C_FLAGS			+= -Werror
-# Выдавать предупреждения (ошибки) о сомнительных констукциях.
-#C_FLAGS			+= -Wall
-# Выдавать предупреждение (ошибку) о любых сомнительных действиях.
-#C_FLAGS			+= -Wextra 
-C_FLAGS										+= -std=c99 
-# Если переменная объявлена как enum, то она должна иметь возможность
-# хранить в себе всевозможные состояния этого enum-а (а не только текущее).
-C_FLAGS										+= -fshort-enums
-# Развертывание циклов.
-C_FLAGS										+= -funroll-loops
-
-C_FAT_FS_FLAGS								:= $(MK_FLAGS) -std=gnu89
-
-CPP_FLAGS									:= $(MK_FLAGS)     
-CPP_FLAGS									+= -Werror -Wall -Wextra
-CPP_FLAGS									+= -std=c++1z
-CPP_FLAGS									+= -funroll-loops
-
-LDFLAGS			:= $(MK_FLAGS)
-LDFLAGS			+= $(LD_FILES)
-# Размещает каждую функцию в отдельной секции.
-LDFLAGS			+= -ffunction-sections -fdata-sections
-# Убираем неиспользуемые функции из .elf.
-LDFLAGS			+= -Wl,--gc-sections 
-
-# Формируем map файл.
-#LDFLAGS			+= -Wl,-Map="build/$(PROJECT_NAME).map"
-
-FREE_RTOS_C_FLAGS		:=	$(C_FLAGS)
-
-#**********************************************************************
-# Параметры toolchain-а.
-#**********************************************************************
-TOOLCHAIN_PATH	= arm-none-eabi
-
-CC				= $(TOOLCHAIN_PATH)-gcc
-CPP				= $(TOOLCHAIN_PATH)-g++
-CCDEP			= $(TOOLCHAIN_PATH)-gcc
-LD				= $(TOOLCHAIN_PATH)-g++
-AR				= $(TOOLCHAIN_PATH)-ar
-AS				= $(TOOLCHAIN_PATH)-gcc
-OBJCOPY			= $(TOOLCHAIN_PATH)-objcopy
-OBJDUMP			= $(TOOLCHAIN_PATH)-objdump
-GDB				= $(TOOLCHAIN_PATH)-gdb
-SIZE			= $(TOOLCHAIN_PATH)-size
-
-# Все субмодули пишут в эти переменные.
-PROJECT_OBJ_FILE 	:=
-PROJECT_PATH		:=
+CC					=	$(TOOLCHAIN_PATH)-gcc
+CPP					=	$(TOOLCHAIN_PATH)-g++
+CCDEP				=	$(TOOLCHAIN_PATH)-gcc
+LD					=	$(TOOLCHAIN_PATH)-g++
+AR					=	$(TOOLCHAIN_PATH)-ar
+AS					=	$(TOOLCHAIN_PATH)-gcc
+OBJCOPY				=	$(TOOLCHAIN_PATH)-objcopy
+OBJDUMP				=	$(TOOLCHAIN_PATH)-objdump
+GDB					=	$(TOOLCHAIN_PATH)-gdb
+SIZE				=	$(TOOLCHAIN_PATH)-size
 
 #**********************************************************************
 # Конфигурация проекта пользователя.
 #**********************************************************************
 # Все файлы из папки cfg в каталоге проекта.
-USER_CFG_H_FILE		:= $(wildcard cfg/*.h)
-USER_CFG_DIR		:= cfg
-USER_CFG_PATH		:= -I$(USER_CFG_DIR)
+PROJ_CFG_H_FILE		:=	$(wildcard cfg/*.h)
+PROJ_CFG_DIR		:=	cfg
+PROJ_CFG_PATH		:=	-I$(PROJ_CFG_DIR)
 
-PROJECT_PATH		+= $(USER_CFG_PATH)
+PROJECT_PATH		:=	$(PROJ_CFG_PATH)
 
-USER_OS_DIR			:= $(shell find module_freertos_for_stm32f1/ -maxdepth 5 -type d -name "*" )
-USER_OS_PATH		:= $(addprefix -I, $(USER_OS_DIR))
+PROJ_H_FILE			:=	$(shell find -maxdepth 10 -type f -name "*.h" )
+PROJ_CPP_FILE		:=	$(shell find -maxdepth 10 -type f -name "*.cpp" )
+PROJ_C_FILE			:=	$(shell find -maxdepth 10 -type f -name "*.c" )
 
-PROJECT_PATH		+= $(USER_OS_PATH)
+PROJ_S_FILE			=	$(STARTUPE_S_NAME)
 
-DEFINE_PROJ			:= -DSTM32F103xB 
+PROJ_DIR			:=	$(shell find -maxdepth 10 -type d -name "*" )
 
-USER_FILE_STARTUPE	:= startup_stm32f103xb.s
-include module_freertos_for_stm32f1/makefile
-include module_fsm/makefile
-include module_mc_hardware_interfaces/makefile
-include module_sensor/makefile
-include module_stm32f1_low_level/makefile
-include module_system_dummy/makefile
+PROJ_PATH			:=	$(addprefix -I, $(PROJ_DIR))
 
-#**********************************************************************
-# Сборка кода пользователя.
-# Весь код пользователя должен быть в корневой папке.
-#**********************************************************************
-USER_CPP_FILE			:= $(shell find user_code/ -maxdepth 5 -type f -name "*.cpp" )
-USER_C_FILE				:= $(shell find user_code/ -maxdepth 5 -type f -name "*.c" )
-USER_DIR				:= $(shell find user_code/ -maxdepth 5 -type d -name "*" )
-USER_PATH				:= $(addprefix -I, $(USER_DIR))
-USER_OBJ_FILE			:= $(addprefix build/obj/, $(USER_CPP_FILE))
-USER_OBJ_FILE			+= $(addprefix build/obj/, $(USER_C_FILE))
-USER_OBJ_FILE			:= $(patsubst %.cpp, %.o, $(USER_OBJ_FILE))
-USER_OBJ_FILE			:= $(patsubst %.c, %.o, $(USER_OBJ_FILE))
+PROJ_OBJ_FILE		:=	$(addprefix build/obj/, $(PROJ_CPP_FILE))
+PROJ_OBJ_FILE		+=	$(addprefix build/obj/, $(PROJ_C_FILE))
+PROJ_OBJ_FILE		+=	$(addprefix build/obj/, $(PROJ_S_FILE))
 
-PROJECT_PATH			+= $(USER_PATH)
-PROJECT_OBJ_FILE		+= $(USER_OBJ_FILE) 
+PROJ_OBJ_FILE		:=	$(patsubst %.cpp, %.o, $(PROJ_OBJ_FILE))
+PROJ_OBJ_FILE		:=	$(patsubst %.c, %.o, $(PROJ_OBJ_FILE))
+PROJ_OBJ_FILE		:=	$(patsubst %.s, %.o, $(PROJ_OBJ_FILE))
+
+PROJECT_PATH		+=	$(PROJ_PATH)
+PROJECT_OBJ_FILE	+=	$(PROJ_OBJ_FILE)
+
+build/obj/%.o:	%.s
+	@echo [AS] $<
+	@mkdir -p $(dir $@)
+	@$(AS)								\
+	$(DEFINE_PROJ)						\
+	$(CODE_OPTIMIZATION)				\
+	$(PROJECT_PATH)						\
+	-c $< -o $@
+
 
 build/obj/%.o:	%.c	
 	@echo [CC] $<
 	@mkdir -p $(dir $@)
 	@$(CC) $(C_FLAGS) 					\
 	$(DEFINE_PROJ)						\
+	$(CODE_OPTIMIZATION)				\
 	$(PROJECT_PATH)						\
-	$(USER_CODE_OPTIMIZATION)			\
 	-c $< -o $@
 	
 build/obj/%.o:	%.cpp	
@@ -122,7 +102,7 @@ build/obj/%.o:	%.cpp
 	@mkdir -p $(dir $@)
 	@$(CPP) $(CPP_FLAGS) 				\
 	$(DEFINE_PROJ)						\
-	$(USER_CODE_OPTIMIZATION)			\
+	$(CODE_OPTIMIZATION)				\
 	$(PROJECT_PATH)						\
 	-c $< -o $@
 
@@ -137,11 +117,19 @@ $(PROJECT_NAME).siz:	build/$(PROJECT_NAME).elf
 	@arm-none-eabi-size --format=berkeley "build/$(PROJECT_NAME).elf"
 	@echo ' '
 
-all:	$(PROJECT_NAME).siz
-#@$(OBJDUMP) -D build/$(PROJECT_NAME).elf > build/$(PROJECT_NAME).asm
-#@$(OBJCOPY) build/$(PROJECT_NAME).elf build/$(PROJECT_NAME).bin -O binary
+all: $(PROJECT_NAME).siz
 	
 clean:	
 	@rm -R ./build
-	@echo 'Project cline!'
+	@echo 'Project cleared!'
+	@echo ' '
+	
+clear_bsp:	
+	@rm -R ./build/bsp
+	@echo 'Bsp cleared!'
+	@echo ' '
+	
+clear_user:	
+	@rm -R ./build/user
+	@echo 'User cash cleared!'
 	@echo ' '
