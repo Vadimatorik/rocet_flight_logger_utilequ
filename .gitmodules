@@ -13,3 +13,6 @@
 [submodule "submodule/module_freertos_for_stm32f1"]
 	path = submodule/module_freertos_for_stm32f1
 	url = git@github.com:Vadimatorik/module_freertos_for_stm32f1.git
+[submodule "openocd_configs"]
+	path = openocd_configs
+	url = git@github.com:Vadimatorik/openocd_configs.git
