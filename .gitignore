@@ -33,6 +33,8 @@
 
 .~lock.makefile#
 build/
+cmake-build-debug/
+.idea/
 
 *.config
 *.creator
